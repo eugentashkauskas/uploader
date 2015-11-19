@@ -6,6 +6,7 @@ use app\models\MCatalogue;
 use app\models\MCatalogueCategories;
 use app\models\MCatalogueImages;
 use app\models\MCurrenciesExchangeRates;
+use app\models\UploadForm;
 use Yii;
 use common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
@@ -224,7 +225,7 @@ class SiteController extends Controller
 
     public function actionUploader(){
 
-        $model = new MCatalogueImages();
+        $model = new UploadForm();
         $modelCatalog = new MCatalogue();
 
         $user_id = Yii::$app->user->id;
@@ -232,17 +233,80 @@ class SiteController extends Controller
         $category = MCatalogueCategories::find(['uid'=>'transport'])->one();
 
         Yii::$app->params['uploadUrl'] = Yii::$app->request->baseUrl.'/frontend/uploads/images/stickers/';
-        if($image=UploadedFile::getInstance($model,'image')){
+
+        $modelCatalog->uid = 'test_uid_'.Yii::$app->security->generateRandomString();
+        $modelCatalog->user_id = 151;
+        $modelCatalog->title = 'Test Title';
+        $modelCatalog->description = 'Test Description';
+        $modelCatalog->currency_code = $currency_type->currency;
+        $modelCatalog->active = 1;
+        $modelCatalog->precision = 1;
+        $modelCatalog->category_id = $category->id;
+        $modelCatalog->show_period_days = '1_week';
+        $modelCatalog->address = 'Latvia';
+        $modelCatalog->latitude = '56.9496487';
+        $modelCatalog->longitude = '24.10518639999998';
+        $modelCatalog->add_ts = $_SERVER['REQUEST_TIME'];
+        $modelCatalog->show_till_ts = $_SERVER['REQUEST_TIME'];
+
+
+        if (Yii::$app->request->isPost) {
+            $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
+            if ($model->validate()) {
+                $count = 0;
+                foreach ($model->imageFiles as $file) {
+                    $modelCatalogImages = new MCatalogueImages();
+                    $ext = strrchr($file->name, ".");
+                    $current_name = Yii::$app->security->generateRandomString();
+                    $modelCatalogImages->image = Yii::getAlias('@imgPath').'/'.$current_name."{$ext}";
+                    $modelCatalog->header_image = $modelCatalogImages->image;
+                    $modelCatalogImages->main_image = 0;
+                    $modelCatalogImages->active = 1;
+                    $modelCatalogImages->order = $count+1;
+                    if($modelCatalogImages->save(false)){
+                        if ($file !== false) {
+                            if(isset($modelCatalogImages->image)){
+
+                                $path =   Yii::getAlias('@imageBaseUrl') .'/'. $current_name."{$ext}";
+
+                            }
+                            $file->saveAs($path);
+                        }
+                    }else{
+                        return $modelCatalogImages->getErrors();
+                    }
+                }
+                $modelCatalog->save(false);
+                return true;
+            } else {
+                return false;
+            }
+
+
+        }else{
+
+            return $this->render('uploader', [
+                'model' => $model,
+            ]);
+
+        }
+
+
+
+
+
+
+        /*if($image=UploadedFile::getInstance($model,'image')){
 
             if (empty($image)) {
                 return false;
             }
             $ext = strrchr($image->name, ".");
             $current_name = Yii::$app->security->generateRandomString();
-            $model->image = Yii::getAlias('@imgPath').'/'.$current_name."{$ext}";
-            $model->main_image = 0;
-            $model->active = 1;
-            $model->order = self::ORDER_IMAGE+1;
+            $modelCatalogImages->image = Yii::getAlias('@imgPath').'/'.$current_name."{$ext}";
+            $modelCatalogImages->main_image = 0;
+            $modelCatalogImages->active = 1;
+            $modelCatalogImages->order = self::ORDER_IMAGE+1;
 
             $modelCatalog->uid = 'test_uid_'.Yii::$app->security->generateRandomString();
             $modelCatalog->user_id = 151;
@@ -260,10 +324,10 @@ class SiteController extends Controller
             $modelCatalog->add_ts = $_SERVER['REQUEST_TIME'];
             $modelCatalog->show_till_ts = $_SERVER['REQUEST_TIME'];
 
-            if ($model->save(false)) {
+            if ($modelCatalogImages->save(false)) {
 
                 if ($image !== false) {
-                    if(isset($model->image)){
+                    if(isset($modelCatalogImages->image)){
                         $path =  Yii::getAlias('@imageBaseUrl') .'/'. $current_name."{$ext}";
                     }
                     $image->saveAs($path);
@@ -271,21 +335,21 @@ class SiteController extends Controller
                 Yii::$app->getSession()->setFlash('success', 'Image saved.');
                 if($modelCatalog->save(false)){
                     if(Yii::$app->request->isAjax){
-                        return $this->redirect('/index.php?r=site%2Fuploader');
+
                     }else{
                         Yii::$app->getSession()->setFlash('success', 'Image saved.');
                     }
                 }
             }else{
-                return $model->getErrors();
+                return $modelCatalogImages->getErrors();
             }
 
         }else{
             return $this->render('uploader', [
-                'model' => $model,
+                'model' => $modelCatalogImages,
             ]);
 
-        }
+        }*/
     }
 
 }

@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php
         echo FileInput::widget([
             'model'=>$model,
-            'attribute' => 'image',
+            'attribute' => 'imageFiles[]',
             'options' => ['multiple' => true],
             'pluginOptions' => [
                 'showPreview' => true,
@@ -49,6 +49,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'browseLabel' =>  $buttonSelect,
                 'layoutTemplates'=>[
                     'preview'=>$tpl
+                ],
+                'pluginEvents' => [
+
                 ],
                 'options' => ['accept' => 'image/*']
             ]
