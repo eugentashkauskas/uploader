@@ -25,6 +25,7 @@ body {
     background-position-x: 50%;
     background-position-y: 55%;
     background-size: 30%;
+    background-position: 50% 65%;
 }
 
 #m_catalog_images_drag .file-drop-zone{
@@ -36,6 +37,7 @@ body {
     background-position-x: 50%;
     background-position-y: 30%;
     background-size: 10%;
+    background-position: 50% 45%;
 }
 
 #m_catalog_images .btn-custom{
