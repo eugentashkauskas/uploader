@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
             if(isset($sticker) && !empty($sticker)){
                 $upload_image = Html::img($sticker->header_image, ['class'=>'file-preview-image', 'alt'=>'TEST', 'title'=>'Test']);
             }
-            $caption = '<label for="mcatalogueimages-image"><span class="glyphicon glyphicon-plus"></span><div class="icon-title">Add image header</div></label>';
+            $caption = '<label class="label_mcatalogueimages_image" for="mcatalogueimages-image"><span class="glyphicon glyphicon-plus"></span><div class="icon-title">Add image header</div></label>';
             $buttonSelect = 'or, <strong>Select Files</strong>';
             $tpl='<div class="file-preview"><div class="file-drop-zone"><div class="file-preview-thumbnails preview-cusotm"></div></div><div class="clearfix"></div>';
             $form=ActiveForm::begin([
@@ -34,16 +34,19 @@ $this->params['breadcrumbs'][] = $this->title;
         echo FileInput::widget([
             'model'=>$model,
             'attribute' => 'image',
+            'options' => ['multiple' => true],
             'pluginOptions' => [
                 'showPreview' => true,
                 'showCaption' => false,
                 'showRemove' => false,
                 'showUpload' => false,
                 'browseClass' => 'btn btn-primary btn-block btn-custom',
+                'browseIcon' => '',
                 'uploadUrl' => Url::to(['/site/uploader']),
                 'initialPreview'=>[
                          $caption
                     ],
+                'browseLabel' =>  $buttonSelect,
                 'layoutTemplates'=>[
                     'preview'=>$tpl
                 ],

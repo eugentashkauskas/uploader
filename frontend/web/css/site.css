@@ -26,6 +26,11 @@ body {
     border: none;
     border-radius: 0px;
     border-right: 1px solid #D5D5D5;
+    background-image: url("images/dragndrop.png");
+    background-repeat: no-repeat;
+    background-position-x: 50%;
+    background-position-y: 30%;
+    background-size: 10%;
 }
 
 #m_catalog_images .btn-custom{
@@ -61,13 +66,17 @@ body {
     width:1107px;
     border:none;
 }
+/*#m_catalog_images .file-preview-frame .label_mcatalogueimages_image{
+    margin-left: 500px;
+}*/
+
 #m_catalog_images .preview-cusotm{
     position:relative;
     top:-280px;
     width:1107px;
-    border:1px solid black;
     margin-left: -23px;
     height:250px;
+    background-color: #F4F4F4;
 }
 #m_catalog_images .file-actions{
     width:52%;
