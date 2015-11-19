@@ -20,6 +20,11 @@ body {
     width: 580px;
     height: 260px;
     border: none;
+    background-image: url("images/dragdroptext.png");
+    background-repeat: no-repeat;
+    background-position-x: 50%;
+    background-position-y: 55%;
+    background-size: 30%;
 }
 
 #m_catalog_images_drag .file-drop-zone{
