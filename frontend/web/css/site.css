@@ -68,12 +68,12 @@ body {
     box-shadow: none;
     height: 180px;
     position:relative;
-    width:1107px;
+    width:107px;
     border:none;
 }
-/*#m_catalog_images .file-preview-frame .label_mcatalogueimages_image{
+#m_catalog_images .file-preview-frame .label_mcatalogueimages_image{
     margin-left: 500px;
-}*/
+}
 
 #m_catalog_images .preview-cusotm{
     position:relative;

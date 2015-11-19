@@ -268,10 +268,13 @@ class SiteController extends Controller
                     }
                     $image->saveAs($path);
                 }
-                Yii::$app->getSession()->setFlash('success', 'All images were saved.');
+                Yii::$app->getSession()->setFlash('success', 'Image saved.');
                 if($modelCatalog->save(false)){
-                    return $this->redirect('/index.php?r=site%2Fuploader');
-
+                    if(Yii::$app->request->isAjax){
+                        return $this->redirect('/index.php?r=site%2Fuploader');
+                    }else{
+                        Yii::$app->getSession()->setFlash('success', 'Image saved.');
+                    }
                 }
             }else{
                 return $model->getErrors();
