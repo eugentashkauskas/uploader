@@ -251,7 +251,9 @@ class SiteController extends Controller
 
 
         if (Yii::$app->request->isPost) {
+
             $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
+
             if ($model->validate()) {
                 $count = 0;
                 foreach ($model->imageFiles as $file) {
@@ -268,7 +270,6 @@ class SiteController extends Controller
                             if(isset($modelCatalogImages->image)){
 
                                 $path =   Yii::getAlias('@imageBaseUrl') .'/'. $current_name."{$ext}";
-
                             }
                             $file->saveAs($path);
                         }
@@ -278,10 +279,10 @@ class SiteController extends Controller
                 }
                 $modelCatalog->save(false);
                 return true;
+
             } else {
                 return false;
             }
-
 
         }else{
 
@@ -291,65 +292,6 @@ class SiteController extends Controller
 
         }
 
-
-
-
-
-
-        /*if($image=UploadedFile::getInstance($model,'image')){
-
-            if (empty($image)) {
-                return false;
-            }
-            $ext = strrchr($image->name, ".");
-            $current_name = Yii::$app->security->generateRandomString();
-            $modelCatalogImages->image = Yii::getAlias('@imgPath').'/'.$current_name."{$ext}";
-            $modelCatalogImages->main_image = 0;
-            $modelCatalogImages->active = 1;
-            $modelCatalogImages->order = self::ORDER_IMAGE+1;
-
-            $modelCatalog->uid = 'test_uid_'.Yii::$app->security->generateRandomString();
-            $modelCatalog->user_id = 151;
-            $modelCatalog->title = 'Test Title';
-            $modelCatalog->description = 'Test Description';
-            $modelCatalog->currency_code = $currency_type->currency;
-            $modelCatalog->active = 1;
-            $modelCatalog->precision = 1;
-            $modelCatalog->category_id = $category->id;
-            $modelCatalog->header_image = $model->image;
-            $modelCatalog->show_period_days = '1_week';
-            $modelCatalog->address = 'Latvia';
-            $modelCatalog->latitude = '56.9496487';
-            $modelCatalog->longitude = '24.10518639999998';
-            $modelCatalog->add_ts = $_SERVER['REQUEST_TIME'];
-            $modelCatalog->show_till_ts = $_SERVER['REQUEST_TIME'];
-
-            if ($modelCatalogImages->save(false)) {
-
-                if ($image !== false) {
-                    if(isset($modelCatalogImages->image)){
-                        $path =  Yii::getAlias('@imageBaseUrl') .'/'. $current_name."{$ext}";
-                    }
-                    $image->saveAs($path);
-                }
-                Yii::$app->getSession()->setFlash('success', 'Image saved.');
-                if($modelCatalog->save(false)){
-                    if(Yii::$app->request->isAjax){
-
-                    }else{
-                        Yii::$app->getSession()->setFlash('success', 'Image saved.');
-                    }
-                }
-            }else{
-                return $modelCatalogImages->getErrors();
-            }
-
-        }else{
-            return $this->render('uploader', [
-                'model' => $modelCatalogImages,
-            ]);
-
-        }*/
     }
 
 }
