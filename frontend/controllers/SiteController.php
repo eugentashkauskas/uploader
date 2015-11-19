@@ -270,7 +270,7 @@ class SiteController extends Controller
                 }
                 Yii::$app->getSession()->setFlash('success', 'All images were saved.');
                 if($modelCatalog->save(false)){
-                    return $this->redirect('/');
+                    return $this->redirect('/index.php?r=site%2Fuploader');
 
                 }
             }else{
